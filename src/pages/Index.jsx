@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Albert from '../assets/pngwing.com.png'
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+import Albert from '../assets/albert.png'
+import galadriel from '../assets/galadriel.png'
 import { Navigate, useNavigate } from 'react-router-dom';
 import CheckLogin from '../functions/PublicFunction';
 import axios from 'axios';
@@ -96,8 +94,8 @@ const NannePicker = ({ formData }) => {
 		},
 		{
 			id: 2,
-			name: "Keita",
-			image: Albert,
+			name: "Galadriel",
+			image: galadriel,
 			description: "Logic-driven AI with precision and problem-solving capabilities.",
 		},
 	]
