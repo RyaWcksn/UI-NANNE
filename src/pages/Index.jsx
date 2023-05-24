@@ -5,7 +5,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import CheckLogin from '../functions/PublicFunction';
 import axios from 'axios';
 
-
 const InputIdentity = ({ onNext }) => {
 
 
@@ -30,55 +29,100 @@ const InputIdentity = ({ onNext }) => {
 	};
 
 	return (
-		<div className='flex justify-center items-center h-screen'>
-			<div className="bg-white rounded-lg shadow-md p-4 w-96">
-				<div className="flex flex-col">
-					<h1>Welcome to Nann-e!</h1>
-					<div className="">
-						<h2>please enter your Name, Age and your Gender to let Nann-e know who you are!</h2>
+		// <div className='flex justify-center items-center h-screen'>
+		// 	<div className="bg-white rounded-lg shadow-md p-4 w-96">
+		// 		<div className="flex flex-col">
+		// 			<h1>Welcome to Nann-e!</h1>
+		// 			<div className="">
+		// 				<h2>please enter your Name, Age and your Gender to let Nann-e know who you are!</h2>
+		// 			</div>
+		// 		</div>
+		// 		<div className="mb-4">
+		// 			<label htmlFor="text" className="block text-gray-700 font-bold mb-2">Name</label>
+		// 			<input
+		// 				type="text"
+		// 				id="name"
+		// 				className="border border-gray-400 p-2 w-full rounded-lg"
+		// 				value={name}
+		// 				onChange={HandleNameChange}
+		// 			/>
+		// 		</div>
+		// 		<div className="mb-4">
+		// 			<label htmlFor="text" className="block text-gray-700 font-bold mb-2">Age</label>
+		// 			<input
+		// 				type="text"
+		// 				id="age"
+		// 				className="border border-gray-400 p-2 w-full rounded-lg"
+		// 				value={age}
+		// 				onChange={HandleAgeChange}
+		// 			/>
+		// 		</div>
+		// 		<div className="mb-4">
+		// 			<div className="mb-4">
+		// 				<label htmlFor="gender" className="block text-gray-700 font-bold mb-2">
+		// 					Gender
+		// 				</label>
+		// <select
+		// 	id="gender"
+		// 	className="border border-gray-400 p-2 w-full rounded-lg"
+		// 	value={gender}
+		// 	onChange={HandleGenderChange}
+		// >
+		// 	<option value="">Select gender</option>
+		// 	<option value="male">Male</option>
+		// 	<option value="female">Female</option>
+		// </select>
+		// 			</div>			</div>
+		// 		<button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+		// 			onClick={handleNext}> Next
+		// 		</button>
+		// 	</div>
+		// </div>
+		<>
+			<div className="min-h-screen bg-[url('../src/assets/bgChat.svg')] flex flex-col justify-center sm:py-12">
+				<div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
+
+					<div className="bg-white shadow w-full rounded-lg">
+
+						<div className='w-full flex items-center justify-center pt-5'><img width={200} src="../src/assets/robotLogin.png" /></div>
+						<div className='divide-y'>
+							<h1 className="font-bold text-center text-gray-600 text-2xl pb-5">Welcome to Nann-e!</h1>
+
+							<div className="px-5 py-7">
+								<label className="font-semibold text-sm text-gray-600 pb-1 block">Name</label>
+								<input type="text" value={name}
+									onChange={HandleNameChange} id='name' className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" required />
+
+								<label className="font-semibold text-sm text-gray-600 pb-1 block">Age</label>
+								<input type="number" value={age}
+									onChange={HandleAgeChange} id='age' min={1} maxLength={3} className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full appearance-none" required />
+
+								<label className="font-semibold text-sm text-gray-600 pb-1 block">Gender</label>
+								<select
+									id="gender"
+									className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full appearance-none"
+									value={gender}
+									onChange={HandleGenderChange}
+								>
+									<option value="">Select gender</option>
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+								</select>
+
+								<button type="button" onClick={handleNext} className="transition duration-200 bg-gray-500 hover:bg-gray-600 focus:bg-gray-700 focus:shadow-sm focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+									<span className="inline-block mr-2">Start Chat</span>
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 inline-block">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+									</svg>
+								</button>
+							</div>
+						</div>
+
 					</div>
+
 				</div>
-				<div className="mb-4">
-					<label htmlFor="text" className="block text-gray-700 font-bold mb-2">Name</label>
-					<input
-						type="text"
-						id="name"
-						className="border border-gray-400 p-2 w-full rounded-lg"
-						value={name}
-						onChange={HandleNameChange}
-					/>
-				</div>
-				<div className="mb-4">
-					<label htmlFor="text" className="block text-gray-700 font-bold mb-2">Age</label>
-					<input
-						type="text"
-						id="age"
-						className="border border-gray-400 p-2 w-full rounded-lg"
-						value={age}
-						onChange={HandleAgeChange}
-					/>
-				</div>
-				<div className="mb-4">
-					<div className="mb-4">
-						<label htmlFor="gender" className="block text-gray-700 font-bold mb-2">
-							Gender
-						</label>
-						<select
-							id="gender"
-							className="border border-gray-400 p-2 w-full rounded-lg"
-							value={gender}
-							onChange={HandleGenderChange}
-						>
-							<option value="">Select gender</option>
-							<option value="male">Male</option>
-							<option value="female">Female</option>
-						</select>
-					</div>			</div>
-				<button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-					onClick={handleNext}> Next
-				</button>
-			</div>
-		</div>
+			</div >
+		</>
 	);
 }
 
@@ -125,12 +169,12 @@ const NannePicker = ({ formData }) => {
 		axios.post('/api/register',
 			bodyRequest,
 		)
-			.then(function(response) {
+			.then(function (response) {
 				console.log(response);
 				localStorage.setItem("id", response.data.id)
 				localStorage.setItem("name", response.data.name)
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error);
 			});
 		setTimeout(() => {
@@ -150,7 +194,7 @@ const NannePicker = ({ formData }) => {
 						<h2>{e.description}</h2>
 						<button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
 							onClick={() => onClickHandler(e.id, e.image)}
-					>
+						>
 							{e.name}
 						</button>
 					</div>
