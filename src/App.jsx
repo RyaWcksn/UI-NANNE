@@ -4,6 +4,7 @@ import InitConfig from './config/config';
 import Index from './pages/Index';
 import ChatComponent from './pages/ChatPage';
 import Dashboards from './pages/Dashboards';
+import Dummy from './pages/Dummy';
 
 
 InitConfig();
@@ -14,6 +15,7 @@ const router = createBrowserRouter(
 			<Route index element={<Index />} />
 			<Route path='/chat' element={<ChatComponent />} />
 			<Route path='/dashboard' element={<Dashboards />} />
+			<Route path='/dummy' element={<Dummy />} />
 		</Route>
 	)
 );
