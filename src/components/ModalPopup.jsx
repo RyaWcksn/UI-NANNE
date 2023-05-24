@@ -7,7 +7,7 @@ const ModalPopup = ({ content, closeModal }) => {
         <h2 className="text-lg font-semibold mb-4">Share this link!</h2>
         <p>{content}</p>
         <button
-          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+          className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
           onClick={closeModal}
         >
           Close

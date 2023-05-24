@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import ModalPopup from '../components/ModalPopup';
 import { Menu, MenuItem, ProSidebarProvider, Sidebar } from 'react-pro-sidebar';
+import bgChat from '../assets/bgChat.svg'
 
 
 const SideBar = ({ sidebarOpen, onSessionClick }) => {
@@ -25,6 +26,7 @@ const SideBar = ({ sidebarOpen, onSessionClick }) => {
 			],
 		},
 	];
+
 	const handleSessionClick = (session) => {
 		onSessionClick(session.chats);
 	};
@@ -32,15 +34,16 @@ const SideBar = ({ sidebarOpen, onSessionClick }) => {
 	return (
 		<Sidebar
 			collapsed={sidebarOpen}
-			breakPoint="md"
+			breakPoint='sm'
+			collapsedWidth='140px'
 			className={`transition-all duration-300 ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'
 				}`}
 		>
 			<Menu>
 				{sessions.map((session) => {
 					return (
-						<div key={session.id} onClick={() => handleSessionClick(session)}>
-							<h1>Session ID: {session.id}</h1>
+						<div key={session.id} onClick={() => handleSessionClick(session)} className='cursor-pointer py-1'>
+							<h1 className='text-center'>Session ID: {session.id}</h1>
 						</div>
 					);
 				})}
@@ -51,7 +54,7 @@ const SideBar = ({ sidebarOpen, onSessionClick }) => {
 
 const NavBar = ({ toggleSidebar }) => {
 	return (
-		<nav className="bg-gray-800">
+		<nav className="bg-gray-800 lg:hidden">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center justify-between h-16">
 					<div className="flex-shrink-0">
@@ -96,7 +99,7 @@ const ChatBody = ({ selectedSessionChats }) => {
 	const [showModal, setShowModal] = useState(false);
 	const [modalContent, setModalContent] = useState('');
 	const [messages, setMessages] = useState([
-		{ id: 2, text: `Hi ${name}, How can I assist you today?` },
+		{ id: 1, text: `Hi ${name}, How can I assist you today?` },
 	]);
 	const [inputText, setInputText] = useState('');
 
@@ -183,17 +186,18 @@ const ChatBody = ({ selectedSessionChats }) => {
 		setShowModal(false);
 	};
 	return (
-		<div className="flex flex-col flex-grow justify-evenly">
-			<div className="mb-1">
-				<img src={nanne} alt="Nanne" className="w-32 h-32 mx-auto" />
+		<div className="flex flex-col justify-evenly flex-grow bg-chat ">
+			<div className="my-3 flex flex-col basis-1/4 lg:basis-1/7 place-items-center">
+				<img src={nanne} alt="Nanne" className="w-32 h-32 mx-auto mb-2" />
 				<button
-					className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+					className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
 					onClick={handleOpenModal}
 				>
 					Generate URL
 				</button>
 			</div>
-			<div className="overflow-y-auto mb-4" ref={chatboxRef} style={{ maxHeight: '200px' }}>
+			{/* The Chat */}
+			<div className="overflow-y-auto mb-4 fit basis-2/5 lg:basis-5/6" ref={chatboxRef}>
 				{messages.map((message) => (
 					<div
 						key={message.id}
@@ -214,20 +218,24 @@ const ChatBody = ({ selectedSessionChats }) => {
 					</div>
 				))}
 			</div>
-			<div className="flex items-center">
+			<div className="flex items-center px-2 order-last basis-1/4 lg:basis-1/6">
 				<input
 					type="text"
-					className="border border-gray-400 p-2 rounded-lg flex-grow"
+					className="border border-gray-400 p-2 flex-grow rounded-xl focus:outline-gray-600 focus:text-gray-600"
 					value={inputText}
 					onChange={handleInputChange}
 					onKeyDown={handleKeyDown}
 					onKeyPress={handleKeyPress}
 				/>
 				<div className='flex flex-row'>
-					<button
-						className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+					{inputText.length <= 0 
+					? <div className='px-4'>
+							<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-mic-fill" viewBox="0 0 16 16"> <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"/> <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/> </svg>  
+						</div>
+					: <button
+						className="ml-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
 						onClick={handleSendMessage}
-					>Send</button>
+					>Send</button>}
 				</div>
 				{showModal && (
 					<ModalPopup content={modalContent} closeModal={handleCloseModal} />
@@ -253,7 +261,7 @@ const ChatComponent = () => {
 		<div className="justify-center items-center h-screen overflow-hidden">
 			<NavBar toggleSidebar={handleToggleSidebar} />
 			<div className="flex flex-col bg-white rounded-lg shadow-md ">
-				<div className='flex flex-row justify-between h-screen p-4 rounded-lg shadow-md '>
+				<div className='flex flex-row justify-between h-screen rounded-lg shadow-md '>
 					<SideBar sidebarOpen={sidebarOpen} onSessionClick={handleSessionClick} />
 					<ChatBody selectedSession={selectedSessionChats} />
 				</div>
