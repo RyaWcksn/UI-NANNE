@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
+import '@babel/polyfill';
 import ModalPopup from '../components/ModalPopup';
 import { Menu, MenuItem, ProSidebarProvider, Sidebar } from 'react-pro-sidebar';
-import bgChat from '../assets/bgChat.svg'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 
 const SideBar = ({ sidebarOpen, onSessionClick }) => {
@@ -34,7 +35,7 @@ const SideBar = ({ sidebarOpen, onSessionClick }) => {
 	return (
 		<Sidebar
 			collapsed={sidebarOpen}
-			breakPoint='sm'
+			breakPoint='md'
 			collapsedWidth='140px'
 			className={`transition-all duration-300 ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'
 				}`}
@@ -103,6 +104,20 @@ const ChatBody = ({ selectedSessionChats }) => {
 	]);
 	const [inputText, setInputText] = useState('');
 
+	const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+	console.log(transcript, "ini transcript");
+	console.log(listening, "ini ");
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
+
 	const handleInputChange = (e) => {
 		setInputText(e.target.value);
 	};
@@ -124,6 +139,7 @@ const ChatBody = ({ selectedSessionChats }) => {
 
 
 	const handleSendMessage = () => {
+		SpeechRecognition.stopListening
 		if (inputText.trim() !== '') {
 			setMessages((prevMessages) => [
 				...prevMessages,
@@ -182,6 +198,11 @@ const ChatBody = ({ selectedSessionChats }) => {
 		}
 	};
 
+	const handleMic = (e) => {
+		e.startListening
+		setInputText(transcript)
+	}
+
 	const handleCloseModal = () => {
 		setShowModal(false);
 	};
@@ -229,9 +250,9 @@ const ChatBody = ({ selectedSessionChats }) => {
 				/>
 				<div className='flex flex-row'>
 					{inputText.length <= 0 
-					? <div className='px-4'>
+					? <button className='px-4 cursor-pointer' onClick={SpeechRecognition.startListening}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-mic-fill" viewBox="0 0 16 16"> <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"/> <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/> </svg>  
-						</div>
+						</button>
 					: <button
 						className="ml-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
 						onClick={handleSendMessage}
