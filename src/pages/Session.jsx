@@ -37,18 +37,17 @@ const SideBar = ({ sidebarOpen, onSessionClick }) => {
 		<Sidebar
 			collapsed={sidebarOpen}
 			breakPoint='md'
-			collapsedWidth='160px'
-			width='350px'
-			className={`transition-all duration-300 ${sidebarOpen ? 'sidebar-open shadow-lg' : 'sidebar-closed'
+			collapsedWidth='140px'
+			className={`transition-all duration-300 ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'
 				}`}
 		>
 			<Menu>
 				{sessions.map((session) => {
 					return (
 						<div key={session.id} onClick={() => handleSessionClick(session)} className='cursor-pointer py-1'>
-							<Link to={`/chat/${session.id}`}>
-								<h1 className='text-center'>Session ID: {session.id}</h1>
-							</Link>
+              <Link to={`/chat/${session.id}`}>
+							<h1 className='text-center'>Session ID: {session.id}</h1>
+              </Link>
 						</div>
 					);
 				})}
@@ -146,6 +145,7 @@ const ChatBody = ({ selectedSessionChats }) => {
 
 
 	const handleSendMessage = () => {
+		SpeechRecognition.stopListening()
 		if (inputText.trim() !== '') {
 			setMessages((prevMessages) => [
 				...prevMessages,
@@ -206,12 +206,7 @@ const ChatBody = ({ selectedSessionChats }) => {
 
 	const handleMic = () => {
 		SpeechRecognition.startListening()
-	}
-
-	const handleSaved = () => {
-		SpeechRecognition.stopListening()
 		setInputText(transcript)
-		resetTranscript()
 	}
 
 	const handleCloseModal = () => {
@@ -252,9 +247,8 @@ const ChatBody = ({ selectedSessionChats }) => {
 			</div>
 			<div className="flex items-center px-2 order-last basis-1/4 md:basis-1/6">
 				<input
-					placeholder='Input your question here'
 					type="text"
-					className="border border-gray-400 p-2 flex-grow rounded-md focus:outline-gray-600 focus:text-gray-600"
+					className="border border-gray-400 p-2 flex-grow rounded-xl focus:outline-gray-600 focus:text-gray-600"
 					value={inputText}
 					onChange={handleInputChange}
 					onKeyDown={handleKeyDown}
@@ -262,10 +256,9 @@ const ChatBody = ({ selectedSessionChats }) => {
 				/>
 				<div className='flex flex-row'>
 					{inputText.length <= 0 
-					? <div className='px-4 cursor-pointer flex' >
-							<svg onClick={handleMic} xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-mic-fill" viewBox="0 0 16 16"> <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"/> <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/> </svg>
-							{listening && <button onClick={handleSaved} className="ml-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">saved</button>}
-						</div>
+					? <button className='px-4 cursor-pointer' onClick={handleMic}>
+							<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-mic-fill" viewBox="0 0 16 16"> <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"/> <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/> </svg>  
+						</button>
 					: <button
 						className="ml-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded"
 						onClick={handleSendMessage}
