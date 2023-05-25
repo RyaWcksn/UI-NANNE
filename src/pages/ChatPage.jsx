@@ -4,6 +4,7 @@ import '@babel/polyfill';
 import ModalPopup from '../components/ModalPopup';
 import { Menu, MenuItem, ProSidebarProvider, Sidebar } from 'react-pro-sidebar';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useSpeechSynthesis, SpeechSynthesisVoice } from 'react-speech-kit';
 import { Link } from 'react-router-dom';
 
 
@@ -97,7 +98,7 @@ const NavBar = ({ toggleSidebar }) => {
 	)
 }
 
-const ChatBody = ({ selectedSessionChats }) => {
+const ChatBody = ({ selectedSessionChats, sessionId}) => {
 	const {
 		transcript,
     listening,
@@ -107,6 +108,8 @@ const ChatBody = ({ selectedSessionChats }) => {
 	
 	const [inputText, setInputText] = useState('');
 
+	const { speak } = useSpeechSynthesis();
+
 	const nanne = localStorage.getItem("nanne")
 	const name = localStorage.getItem("name")
 	const id = localStorage.getItem("id")
@@ -115,10 +118,6 @@ const ChatBody = ({ selectedSessionChats }) => {
 	const [messages, setMessages] = useState([
 		{ id: 1, text: `Hi ${name}, How can I assist you today?` },
 	]);
-	
-	console.log(transcript, "ini transcript");
-	console.log(typeof transcript);
-	console.log(listening, "ini ");
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -144,7 +143,6 @@ const ChatBody = ({ selectedSessionChats }) => {
 			});
 	};
 
-
 	const handleSendMessage = () => {
 		if (inputText.trim() !== '') {
 			setMessages((prevMessages) => [
@@ -163,6 +161,7 @@ const ChatBody = ({ selectedSessionChats }) => {
 					message: inputText,
 					id: Number(id),
 					name: name,
+					sessionId: sessionId,
 				})
 				.then((response) => {
 					// Simulate Nanne's response after receiving a successful response from the API
@@ -218,7 +217,7 @@ const ChatBody = ({ selectedSessionChats }) => {
 		setShowModal(false);
 	};
 	return (
-		<div className="flex flex-col justify-evenly flex-grow bg-chat ">
+		<div className="flex flex-col justify-evenly flex-grow bg-chat">
 			<div className="my-3 flex flex-col basis-1/4 md:basis-1/7 place-items-center">
 				<img src={nanne} alt="Nanne" className="w-32 h-32 mx-auto mb-2" />
 				<button
@@ -241,10 +240,17 @@ const ChatBody = ({ selectedSessionChats }) => {
 								}`}
 						>
 							{message.text && message.text.split('\n').map((line, index) => (
+								<>
 								<React.Fragment key={index}>
 									<p className={`text-sm text-left ${message.isUser ? 'text-right' : ''}`}>{line}</p>
 									{index !== message.text.split('\n').length - 1 && <br />} {/* Add <br /> element between lines */}
 								</React.Fragment>
+									<button onClick={() => speak({ 
+										text: line, voice: SpeechSynthesisVoice
+									})} className='mt-2'>
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-volume-up" viewBox="0 0 16 16"> <path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/> <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/> <path d="M10.025 8a4.486 4.486 0 0 1-1.318 3.182L8 10.475A3.489 3.489 0 0 0 9.025 8c0-.966-.392-1.841-1.025-2.475l.707-.707A4.486 4.486 0 0 1 10.025 8zM7 4a.5.5 0 0 0-.812-.39L3.825 5.5H1.5A.5.5 0 0 0 1 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 7 12V4zM4.312 6.39 6 5.04v5.92L4.312 9.61A.5.5 0 0 0 4 9.5H2v-3h2a.5.5 0 0 0 .312-.11z"/> </svg>
+										</button>
+								</>
 							))}
 						</div>
 					</div>
@@ -279,9 +285,82 @@ const ChatBody = ({ selectedSessionChats }) => {
 	)
 }
 
+// const TextToSpeech = ({ text }) => {
+//   const [isPaused, setIsPaused] = useState(false);
+//   const [utterance, setUtterance] = useState(null);
+
+//   useEffect(() => {
+//     const synth = window.speechSynthesis;
+//     const u = new SpeechSynthesisUtterance(text);
+
+//     setUtterance(u);
+
+//     return () => {
+//       synth.cancel();
+//     };
+//   }, [text]);
+
+//   const handlePlay = () => {
+//     const synth = window.speechSynthesis;
+
+//     if (isPaused) {
+//       synth.resume();
+//     }
+
+//     synth.speak(utterance);
+
+//     setIsPaused(false);
+//   };
+
+//   const handlePause = () => {
+//     const synth = window.speechSynthesis;
+
+//     synth.pause();
+
+//     setIsPaused(true);
+//   };
+
+//   const handleStop = () => {
+//     const synth = window.speechSynthesis;
+
+//     synth.cancel();
+
+//     setIsPaused(false);
+//   };
+
+//   return (
+//     <div>
+//       <button onClick={handlePlay}>{isPaused ? "Resume" : "Play"}</button>
+//       <button onClick={handlePause}>Pause</button>
+//       <button onClick={handleStop}>Stop</button>
+//     </div>
+//   );
+// };
+
+
 const ChatComponent = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 	const [selectedSessionChats, setSelectedSessionChats] = useState([]);
+	const id = localStorage.getItem("id")
+	const [sessionId, setSessionId] = useState(null);
+
+	const fetchIdSession = async () => {
+		try {
+			const response = await axios.post('/api/session', { userId: Number(id) });
+
+			// Handle the response
+			setSessionId(response.data.sessionId);
+		} catch (error) {
+			// Handle any errors
+			console.error(error);
+		}
+	};
+
+	console.log(sessionId);
+
+	useEffect(() => {
+		fetchIdSession()
+	}, [])
 
 	const handleToggleSidebar = () => {
 		setSidebarOpen(!sidebarOpen);
@@ -297,7 +376,7 @@ const ChatComponent = () => {
 			<div className="flex flex-col bg-white rounded-lg shadow-md ">
 				<div className='flex flex-row justify-between h-screen rounded-lg shadow-md '>
 					<SideBar sidebarOpen={sidebarOpen} onSessionClick={handleSessionClick} />
-					<ChatBody selectedSession={selectedSessionChats} />
+					<ChatBody selectedSession={selectedSessionChats} sessionId={sessionId}/>
 				</div>
 			</div>
 		</div>
