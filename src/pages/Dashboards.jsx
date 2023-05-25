@@ -91,6 +91,7 @@ const Dashboards = () => {
 				id: data.Id,
 				name: data.Name,
 				age: data.Age,
+				gender: data.Gender,
 				nanne: data.Nanne,
 				chats: Chat.map(({ Message, IsUser }) => ({
 					message: Message,
@@ -114,38 +115,80 @@ const Dashboards = () => {
 	};
 
 	return (
-		<div className="container mx-auto px-4 py-8">
-			<h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-			<table className="min-w-full bg-white border border-gray-200">
-				<thead>
-					<tr>
-						<th className="px-4 py-2 bg-gray-100 border-b">Name</th>
-						<th className="px-4 py-2 bg-gray-100 border-b">Age</th>
-						<th className="px-4 py-2 bg-gray-100 border-b">Nanne</th>
-						<th className="px-4 py-2 bg-gray-100 border-b">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{tableData.map((data) => (
-						<tr key={data.id}>
-							<td className="px-4 py-2 border-b">{data.name}</td>
-							<td className="px-4 py-2 border-b">{data.age}</td>
-							<td className="px-4 py-2 border-b">{data.nanne}</td>
-							<td className="px-4 py-2 border-b">
-								<button
-									className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 rounded"
-									onClick={() => handleShowModal(data.id)}
-								>
-									Show Chats
-								</button>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
+		// <div className="container mx-auto px-4 py-8">
+		// 	<h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+		// 	<table className="min-w-full bg-white border border-gray-200">
+		// 		<thead>
+		// 			<tr>
+		// 				<th className="px-4 py-2 bg-gray-100 border-b">Name</th>
+		// 				<th className="px-4 py-2 bg-gray-100 border-b">Age</th>
+		// 				<th className="px-4 py-2 bg-gray-100 border-b">Nanne</th>
+		// 				<th className="px-4 py-2 bg-gray-100 border-b">Actions</th>
+		// 			</tr>
+		// 		</thead>
+		// 		<tbody>
+		// {tableData.map((data) => (
+		// 	<tr key={data.id}>
+		// 		<td className="px-4 py-2 border-b">{data.name}</td>
+		// 		<td className="px-4 py-2 border-b">{data.age}</td>
+		// 		<td className="px-4 py-2 border-b">{data.nanne}</td>
+		// 		<td className="px-4 py-2 border-b">
+		// 			<button
+		// 				className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 rounded"
+		// 				onClick={() => handleShowModal(data.id)}
+		// 			>
+		// 				Show Chats
+		// 			</button>
+		// 		</td>
+		// 	</tr>
+		// ))}
+		// 		</tbody>
+		// 	</table>
 
-			{showModal && <ChatModal chats={selectedChats} closeModal={handleCloseModal} />}
-		</div>
+		// 	{showModal && <ChatModal chats={selectedChats} closeModal={handleCloseModal} />}
+		// </div>
+		<>
+			<div className="min-h-screen bg-[url('../src/assets/bgChat.svg')] flex flex-col justify-content-center align-items-center w-full sm:py-12">
+				<div className="p-10 xs:p-0 w-full justify-content-center align-items-center mx-auto lg:w-3/4 md:w-3/5">
+
+					<div className="bg-white shadow-lg w-full rounded-lg ">
+						<h1 className='font-bold text-center text-gray-600 text-2xl p-5'>Dashboard Nann-E</h1>
+						<div class="flex flex-col">
+							<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+								<div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+									<div class="overflow-hidden">
+										<table class="min-w-full text-left text-sm font-light">
+											<thead class="border-b font-medium dark:border-neutral-500">
+												<tr>
+													<th scope="col" class="px-6 py-4">Name</th>
+													<th scope="col" class="px-6 py-4">Age</th>
+													<th scope="col" class="px-6 py-4">Gender</th>
+													<th scope="col" class="px-6 py-4">Nann-E</th>
+												</tr>
+											</thead>
+											<tbody>
+
+												{tableData.map((data) => (
+													<tr
+														class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+														<td class="whitespace-nowrap px-6 py-4 font-medium">{data.name}</td>
+														<td class="whitespace-nowrap px-6 py-4">{data.age}</td>
+														<td class="whitespace-nowrap px-6 py-4">{data.gender}</td>
+														<td class="whitespace-nowrap px-6 py-4">{data.nanne}</td>
+													</tr>
+												))}
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</>
 	);
 };
 

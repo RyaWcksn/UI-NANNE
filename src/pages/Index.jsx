@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Albert from '../assets/albert.png'
-import galadriel from '../assets/galadriel.png'
 import albertBot from '../assets/Albert-bot.png'
 import elfBot from '../assets/Elf-bot.png'
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -88,7 +86,7 @@ const InputIdentity = ({ onNext }) => {
 
 						<div className='w-full flex items-center justify-center pt-5'><img width={200} src="../src/assets/robotLogin.png" /></div>
 						<div className='divide-y'>
-							<h1 className="font-bold text-center text-gray-600 text-2xl pb-5">Welcome to Nann-e!</h1>
+							<h1 className="font-bold text-center text-gray-600 text-2xl pb-5">Welcome to Nann-E!</h1>
 
 							<div className="px-5 py-7">
 								<label className="font-semibold text-sm text-gray-600 pb-1 block">Name</label>
@@ -136,13 +134,13 @@ const NannePicker = ({ formData }) => {
 			id: 1,
 			name: "Albert",
 			image: albertBot,
-			description: "Creative AI focusing on intuition, emotions, and artistic expression.",
+			description: "Logic-driven AI with precision and problem-solving capabilities.",
 		},
 		{
 			id: 2,
 			name: "Galadriel",
 			image: elfBot,
-			description: "Logic-driven AI with precision and problem-solving capabilities.",
+			description: "Creative AI focusing on intuition, emotions, and artistic expression.",
 		},
 	]
 
@@ -206,7 +204,7 @@ const NannePicker = ({ formData }) => {
 		<>
 			<div className="min-h-screen bg-[url('../src/assets/bgChat.svg')] w-full flex flex-col sm:py-12">
 				<div className="p-8 xs:p-1 mx-auto justify-content-center align-items-center">
-					<h1 className="font-bold text-center text-gray-600 text-2xl pb-7">Which one you like?</h1>
+					<h1 className="font-bold text-center text-gray-600 text-2xl pb-7">Which Nann-E you like?</h1>
 					<div className="gap-10 grid grid-cols-1  mx-auto justify-content-center align-items-center md:grid-cols-2 w-[80%] md:w-[80%] lg:w-[50%]">
 						{data.map((e, i) => (
 							<div key={i} className="bg-white rounded-lg shadow-md p-4">
