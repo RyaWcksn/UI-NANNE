@@ -86,19 +86,19 @@ const Dashboards = () => {
 			const response = await axios.post('/api/dashboard', body);
 			console.log(response.data)
 
-			const { Chat, ...data } = response.data;
-			const formattedData = {
-				id: data.Id,
-				name: data.Name,
-				age: data.Age,
-				gender: data.Gender,
-				nanne: data.Nanne,
-				chats: Chat.map(({ Message, IsUser }) => ({
-					message: Message,
-					isUser: IsUser === 'yes' ? 'yes' : 'no',
-				})),
-			};
-			setTableData([formattedData]);
+			// const { Chat, ...data } = response.data;
+			// const formattedData = {
+			// 	id: data.id,
+			// 	name: data.name,
+			// 	age: data.age,
+			// 	gender: data.gender,
+			// 	nanne: data.nanne,
+			// 	chats: Chat.map(({ Message, IsUser }) => ({
+			// 		message: Message,
+			// 		isUser: IsUser === 'yes' ? 'yes' : 'no',
+			// 	})),
+			// };
+			setTableData(response.data);
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}
