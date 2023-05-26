@@ -37,72 +37,32 @@ const ChatModal = ({ chats, closeModal }) => {
 const Dashboards = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [selectedChats, setSelectedChats] = useState([]);
-	const [tableData, setTableData] = useState([]);
 
-	// Sample data
-	// const tableData = [
-	// 	{
-	// 		id: 1,
-	// 		name: 'John',
-	// 		age: 25,
-	// 		nanne: 'Nanne A',
-	// 		chats: [
-	// 			{ message: 'Chat 1', isUser: 'yes' },
-	// 			{ message: 'Chat 2', isUser: 'no' },
-	// 			{ message: 'Chat 3', isUser: 'yes' }
-	// 		]
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		name: 'Jane',
-	// 		age: 30,
-	// 		nanne: 'Nanne B',
-	// 		chats: [
-	// 			{ message: 'Chat 4', isUser: 'no' },
-	// 			{ message: 'Chat 5', isUser: 'yes' }
-	// 		]
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		name: 'Alice',
-	// 		age: 35,
-	// 		nanne: 'Nanne C',
-	// 		chats: [{ message: 'Chat 6', isUser: 'no' }]
-	// 	}
-	// ];
 	const search = useLocation().search
 	const searchParams = new URLSearchParams(search)
 	const param = searchParams.get('ref')
 
+	const [tableData, setTableData] = useState('');
 	useEffect(() => {
-		fetchData(param);
-	}, []);
-	console.log(param)
-	console.log(tableData)
-
-	const fetchData = async (params) => {
-		const body = { hash: params }
-		try {
-			const response = await axios.post('/api/dashboard', body);
-			console.log(response.data)
-
-			// const { Chat, ...data } = response.data;
-			// const formattedData = {
-			// 	id: data.id,
-			// 	name: data.name,
-			// 	age: data.age,
-			// 	gender: data.gender,
-			// 	nanne: data.nanne,
-			// 	chats: Chat.map(({ Message, IsUser }) => ({
-			// 		message: Message,
-			// 		isUser: IsUser === 'yes' ? 'yes' : 'no',
-			// 	})),
-			// };
-			setTableData(response.data);
-		} catch (error) {
-			console.error('Error fetching data:', error);
+		console.log("Masuk sini ga nih")
+		const fetchData = async () => {
+			console.log("Masuk sini ga")
+			const page = 1
+			const limit = 10
+			const Url = `/api/dashboard?hash=${param}&limit=${limit}&page=${page}`
+			try {
+				const response = await axios.get(Url);
+				console.log("Response from BE ", response.data)
+				setTableData(response.data);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+		if (tableData == '') {
+			fetchData()
 		}
-	};
+	}, [tableData]);
+
 
 	const handleShowModal = (id) => {
 		const selectedData = tableData.find((data) => data.id === id);
@@ -153,33 +113,32 @@ const Dashboards = () => {
 
 					<div className="bg-white shadow-lg w-full rounded-lg ">
 						<h1 className='font-bold text-center text-gray-600 text-2xl p-5'>Dashboard Nann-E</h1>
-						<div class="flex flex-col">
-							<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-								<div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-									<div class="overflow-hidden">
-										<table class="min-w-full text-left text-sm font-light">
-											<thead class="border-b font-medium dark:border-neutral-500">
+						<div className="flex flex-col">
+							<div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+								<div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+									<div className="overflow-hidden">
+										<table className="min-w-full text-left text-sm font-light">
+											<thead className="border-b font-medium dark:border-neutral-500">
 												<tr>
-													<th scope="col" class="px-6 py-4">Name</th>
-													<th scope="col" class="px-6 py-4">Age</th>
-													<th scope="col" class="px-6 py-4">Gender</th>
-													<th scope="col" class="px-6 py-4">Nann-E</th>
+													<th scope="col" className="px-6 py-4">Name</th>
+													<th scope="col" className="px-6 py-4">Age</th>
+													<th scope="col" className="px-6 py-4">Gender</th>
+													<th scope="col" className="px-6 py-4">Nann-E</th>
 												</tr>
 											</thead>
 											<tbody>
 
-												{tableData.map((data) => (
-													<tr
-														class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-														<td class="whitespace-nowrap px-6 py-4 font-medium">{data.name}</td>
-														<td class="whitespace-nowrap px-6 py-4">{data.age}</td>
-														<td class="whitespace-nowrap px-6 py-4">{data.gender}</td>
-														<td class="whitespace-nowrap px-6 py-4">{data.nanne}</td>
-													</tr>
-												))}
+												<tr
+													className="border-b transition duration-299 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+													<td className="whitespace-nowrap px-6 py-4 font-medium">{tableData.Name}</td>
+													<td className="whitespace-nowrap px-6 py-4">{tableData.Age}</td>
+													<td className="whitespace-nowrap px-6 py-4">{tableData.Gender}</td>
+													<td className="whitespace-nowrap px-6 py-4">{tableData.Nanne}</td>
+												</tr>
 
 											</tbody>
 										</table>
+
 									</div>
 								</div>
 							</div>
