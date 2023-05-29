@@ -149,7 +149,7 @@ const Dashboards = () => {
 					</div>
 
 					<div className="flex inset-0 items-top justify-center mt-10 gap-4 flex-wrap">
-						{tableData.Sessions.map((session) => (
+						{tableData.Session ? tableData.Sessions.map((session) => (
 							<div className='basis-1/4 py-2 sm:px-6 lg:px-1 sm:mx-6 px-6'>
 								<div key={session.id} className="bg-white rounded-lg shadow-md p-6 w-96 ">
 									<h2 className="text-lg font-semibold mb-4">{new Date(session.createdAt).toLocaleString('en-US', {
@@ -182,7 +182,7 @@ const Dashboards = () => {
 									</div>
 								</div>
 							</div>
-						))}
+						)) : <><p>No History Chat</p></>}
 					</div>
 
 				</div>
