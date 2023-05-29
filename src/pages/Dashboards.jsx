@@ -149,16 +149,16 @@ const Dashboards = () => {
 					</div>
 
 					<div className="flex inset-0 items-top justify-center mt-10 gap-4 flex-wrap">
-						{tableData.Session ? tableData.Sessions.map((session) => (
-							<div className='basis-1/4 py-2 sm:px-6 lg:px-1 sm:mx-6 px-6'>
-								<div key={session.id} className="bg-white rounded-lg shadow-md p-6 w-96 ">
+						{tableData.git  && tableData.Sessions.map((session) => (
+							<div key={session.id} className='basis-1/4 py-2 sm:px-6 lg:px-1 sm:mx-6 px-6'>
+								<div className="bg-white rounded-lg shadow-md p-6 w-96 ">
 									<h2 className="text-lg font-semibold mb-4">{new Date(session.createdAt).toLocaleString('en-US', {
 										dateStyle: 'medium',
 										timeStyle: 'short'
 									})}</h2>
 									<div className="max-h-40 overflow-y-auto">
 										<div className="max-h-40 overflow-y-auto">
-											{session.chats ? (
+											{session.chats !== null && session.chats.length > 0 ? (
 												session.chats.map((chat) => (
 													<div
 														key={chat.id}
@@ -169,10 +169,11 @@ const Dashboards = () => {
 															className={`p-2 rounded-lg ${chat.isUser === 'yes' ? 'bg-green-100' : 'bg-blue-100'
 																}`}
 														>
-															<p className={`text-sm text-left ${chat.isUser === 'yes' ? 'text-right' : ''}`}>{chat.message}</p>
+															<p className={`text-sm text-left ${chat.isUser === 'yes' ? 'text-right' : ''}`}>
+																{chat.message}
+															</p>
 														</div>
 													</div>
-
 												))
 											) : (
 												<p>No chats available.</p>
@@ -182,7 +183,7 @@ const Dashboards = () => {
 									</div>
 								</div>
 							</div>
-						)) : <><p>No History Chat</p></>}
+						))}
 					</div>
 
 				</div>
