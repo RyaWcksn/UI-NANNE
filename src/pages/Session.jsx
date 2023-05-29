@@ -214,13 +214,13 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 		if (inputText.trim() !== '') {
 			setChats((prevMessages) => [
 				...prevMessages,
-				{ id: Date.now(), text: inputText, isUser: "yes" },
+				{ id: Date.now(), message: inputText, isUser: "yes" },
 			]);
 			setInputText('');
 			setTimeout(() => {
 				setChats((prevMessages) => [
 					...prevMessages,
-					{ id: Date.now(), text: "Hmm, let me think about that...", isUser: "no" },
+					{ id: Date.now(), message: "Hmm, let me think about that...", isUser: "no" },
 				]);
 			}, 1000);
 			axios
@@ -234,7 +234,7 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 					// Simulate Nanne's response after receiving a successful response from the API
 					setChats((prevMessages) => [
 						...prevMessages,
-						{ id: response.data.id, text: response.data.response, isUser: "no" },
+						{ id: response.data.id, message: response.data.response, isUser: "no" },
 					]);
 				})
 				.catch((error) => {
