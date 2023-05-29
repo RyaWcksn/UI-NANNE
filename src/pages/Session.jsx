@@ -137,7 +137,7 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 
 	console.log(param.id, 'param');
 
-	const [chats, setChats] = useState(null);
+	const [chats, setChats] = useState([]);
 
 	// console.log(chats, "dataSessionById);
 
@@ -147,6 +147,7 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 
 			// Handle the response
 			setChats(response.data.chats);
+	
 			console.log(response.data.chats, "chats");
 			console.log(response.data.chats[0].message, "message");
 			{response.data.chats.map((chat) => {
@@ -207,18 +208,19 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 				console.error('Error:', error);
 			});
 	};
+	console.log(chats.messages, "Chats");
 
 	const handleSendMessage = () => {
 		if (inputText.trim() !== '') {
-			setMessages((prevMessages) => [
+			setChats((prevMessages) => [
 				...prevMessages,
-				{ id: Date.now(), text: inputText, isUser: true },
+				{ id: Date.now(), text: inputText, isUser: "yes" },
 			]);
 			setInputText('');
 			setTimeout(() => {
-				setMessages((prevMessages) => [
+				setChats((prevMessages) => [
 					...prevMessages,
-					{ id: Date.now(), text: "Hmm, let me think about that...", isUser: false },
+					{ id: Date.now(), text: "Hmm, let me think about that...", isUser: "no" },
 				]);
 			}, 1000);
 			axios
@@ -230,9 +232,9 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 				})
 				.then((response) => {
 					// Simulate Nanne's response after receiving a successful response from the API
-					setMessages((prevMessages) => [
+					setChats((prevMessages) => [
 						...prevMessages,
-						{ id: Date.now(), text: response.data.response, isUser: false },
+						{ id: response.data.id, text: response.data.response, isUser: "no" },
 					]);
 				})
 				.catch((error) => {
@@ -252,7 +254,7 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 	useEffect(() => {
 		// Scroll to the bottom of the chatbox when new messages are added
 		chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
-	}, [messages]);
+	}, [chats]);
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
@@ -309,7 +311,7 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 							{chat.message && chat.message.split('\n').map((line, index) => (
 								<React.Fragment key={index}>
 									<p className={`text-sm text-left ${chat.isUser != "no" ? 'text-right' : 'max-w-xl'}`}>{line}</p>
-									 {/* {index !== chat.message.split('\n').length - 1 && <br />} Add <br /> element between lines */}
+									 {index !== chat.message.split('\n').length - 1 && <br />} {/* Add <br /> element between lines */}
 									{line ? 
 										<div className='flex justify-end mb-2'>
 										<button onClick={() => speak({ 

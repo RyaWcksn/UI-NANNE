@@ -158,31 +158,8 @@ const ChatBody = ({ selectedSessionChats}) => {
 	console.log(sessionId, "ini SessionId");
 
 	useEffect(() => {
-		if (sessionId === null || sessionId != sessionId) {
+		if (sessionId === null) {
 			fetchIdSession()
-		}
-	}, [sessionId])
-
-	const fetchSessionById = async () => {
-		try {
-			const response = await axios.post('/api/getSessionById', { sessionId: sessionId });
-
-			// Handle the response
-			setChats(response.data.chats);
-			console.log(response.data.chats, "chats");
-			console.log(response.data.chats[0].message, "message");
-			{response.data.chats.map((chat) => {
-				console.log(chat.message, "chat");
-			})}
-		} catch (error) {
-			// Handle any errors
-			console.error(error);
-		}
-	};
-
-	useEffect(() => {
-		if (sessionId != null || sessionId != sessionId) {
-			fetchSessionById()
 		}
 	}, [sessionId])
 
@@ -203,7 +180,7 @@ const ChatBody = ({ selectedSessionChats}) => {
 	const [showModal, setShowModal] = useState(false);
 	const [modalContent, setModalContent] = useState('');
 	const [messages, setMessages] = useState([
-		{ id: 1, text: `Hi ${name}, How can I assist you today?` },
+		{ id: 1, text: `Hi ${name}, How can I assist you today?`, isUser: false },
 	]);
 
   if (!browserSupportsSpeechRecognition) {
@@ -263,13 +240,6 @@ const ChatBody = ({ selectedSessionChats}) => {
 		}
 	};
 
-	useEffect(() => {
-		if (selectedSessionChats) {
-			setMessages(selectedSessionChats);
-		}
-	}, [selectedSessionChats]);
-
-
 	const chatboxRef = useRef(null);
 	useEffect(() => {
 		// Scroll to the bottom of the chatbox when new messages are added
@@ -318,21 +288,21 @@ const ChatBody = ({ selectedSessionChats}) => {
 			</div>
 			{/* The Chat */}
 			<div className="overflow-y-auto mb-4 fit basis-2/5 md:basis-5/6" ref={chatboxRef}>
-				{chats!= null && chats.map((chat) => (
+				{messages.map((chat) => (
 					<div
 						key={chat.id}
-						className={`flex p-2 rounded-lg ${chat.isUser != "no" ? 'justify-end' : 'justify-start'
+						className={`flex p-2 rounded-lg ${chat.isUser != false ? 'justify-end' : 'justify-start'
 							}`}
 					>
 						<div
-							className={`p-2 rounded-lg ${chat.isUser != "no" ? 'bg-green-100' : 'bg-blue-100'
+							className={`p-2 rounded-lg ${chat.isUser != false ? 'bg-green-100' : 'bg-blue-100'
 								}`}
 						>
-							{chat.message != null && chat.message && chat.message.split('\n').map((line, index) => (
+							{chat.text != null && chat.text && chat.text.split('\n').map((line, index) => (
 								<div key={index}>
 								<React.Fragment>
-									<p className={`text-sm text-left ${chat.isUser != "no" ? 'text-right' : 'max-w-xl'}`}>{line}</p>
-									{index !== chat.message.split('\n').length - 1 && <br />} {/* Add <br /> element between lines */}
+									<p className={`text-sm text-left ${chat.isUser != false ? 'text-right' : 'max-w-xl'}`}>{line}</p>
+									{index !== chat.text.split('\n').length - 1 && <br />} {/* Add <br /> element between lines */}
 								</React.Fragment>
 									<div className='flex justify-end'>
 									<button onClick={() => speak({ 
