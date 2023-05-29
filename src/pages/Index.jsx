@@ -104,7 +104,7 @@ const InputIdentity = ({ onNext }) => {
 									value={gender}
 									onChange={HandleGenderChange}
 								>
-									<option value="">Select gender</option>
+									<option value="" style={{ display: 'none' }} disabled>Select gender</option>
 									<option value="male">Male</option>
 									<option value="female">Female</option>
 								</select>
@@ -121,7 +121,7 @@ const InputIdentity = ({ onNext }) => {
 					</div>
 
 				</div>
-			</div>
+			</div >
 		</>
 	);
 }
