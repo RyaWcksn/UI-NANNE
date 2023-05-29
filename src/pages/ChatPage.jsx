@@ -132,7 +132,7 @@ const NavBar = ({ toggleSidebar }) => {
 	)
 }
 
-const ChatBody = ({ selectedSessionChats, sessionId}) => {
+const ChatBody = ({ selectedSessionChats}) => {
 	const param = useParams()
 
 	console.log(param.id, 'param');
@@ -141,9 +141,31 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 
 	// console.log(chats, "dataSessionById);
 
+	const [sessionId, setSessionId] = useState(null); 
+
+	const fetchIdSession = async () => {
+		try {
+			const response = await axios.post('/api/session', { userId: Number(id) });
+
+			// Handle the response
+			setSessionId(response.data.sessionId);
+		} catch (error) {
+			// Handle any errors
+			console.error(error);
+		}
+	};
+
+	console.log(sessionId, "ini SessionId");
+
+	useEffect(() => {
+		if (sessionId === null || sessionId != sessionId) {
+			fetchIdSession()
+		}
+	}, [sessionId])
+
 	const fetchSessionById = async () => {
 		try {
-			const response = await axios.post('/api/getSessionById', { sessionId: param.id });
+			const response = await axios.post('/api/getSessionById', { sessionId: sessionId });
 
 			// Handle the response
 			setChats(response.data.chats);
@@ -159,10 +181,10 @@ const ChatBody = ({ selectedSessionChats, sessionId}) => {
 	};
 
 	useEffect(() => {
-		if (param.id != '' || param.id != param.id) {
+		if (sessionId != null || sessionId != sessionId) {
 			fetchSessionById()
 		}
-	}, [param])
+	}, [sessionId])
 
 	const {
 		transcript,
@@ -359,25 +381,6 @@ const ChatComponent = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 	const [selectedSessionChats, setSelectedSessionChats] = useState([]);
 	const id = localStorage.getItem("id")
-	const [sessionId, setSessionId] = useState(null); 
-
-	const fetchIdSession = async () => {
-		try {
-			const response = await axios.post('/api/session', { userId: Number(id) });
-
-			// Handle the response
-			setSessionId(response.data.sessionId);
-		} catch (error) {
-			// Handle any errors
-			console.error(error);
-		}
-	};
-
-	console.log(sessionId);
-
-	useEffect(() => {
-		fetchIdSession()
-	}, [])
 
 	const handleToggleSidebar = () => {
 		setSidebarOpen(!sidebarOpen);
@@ -393,7 +396,7 @@ const ChatComponent = () => {
 			<div className="flex flex-col bg-white rounded-lg shadow-md ">
 				<div className='flex flex-row justify-between h-screen rounded-lg shadow-md '>
 					<SideBar sidebarOpen={sidebarOpen} onSessionClick={handleSessionClick}/>
-					<ChatBody selectedSession={selectedSessionChats} sessionId={sessionId}/>
+					<ChatBody selectedSession={selectedSessionChats} />
 				</div>
 			</div>
 		</div>
