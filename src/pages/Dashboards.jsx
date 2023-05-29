@@ -2,37 +2,37 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const ChatModal = ({ chats, closeModal }) => {
-	return (
-		<div className="fixed inset-0 flex items-center justify-center z-10">
-			<div className="bg-white rounded-lg shadow-md p-6 w-96">
-				<h2 className="text-lg font-semibold mb-4">Chats</h2>
-				<div className="max-h-40 overflow-y-auto">
-					{chats.map((chat, index) => (
-						<div
-							key={index}
-							className={`flex p-2 rounded-lg ${chat.isUser === 'yes' ? 'justify-end' : 'justify-start'
-								}`}
-						>
-							<div
-								className={`p-2 rounded-lg ${chat.isUser === 'yes' ? 'bg-green-100' : 'bg-blue-100'
-									}`}
-							>
-								<p className={`text-sm text-left ${chat.isUser === 'yes' ? 'text-right' : ''}`}>{chat.message}</p>
-							</div>
-						</div>
-					))}
-				</div>
-				<button
-					className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-					onClick={closeModal}
-				>
-					Close
-				</button>
-			</div>
-		</div>
-	);
-};
+// const ChatModal = ({ chats, closeModal }) => {
+// 	return (
+// 		<div className="fixed inset-0 flex items-center justify-center z-10">
+// 			<div className="bg-white rounded-lg shadow-md p-6 w-96">
+// 				<h2 className="text-lg font-semibold mb-4">Chats</h2>
+// 				<div className="max-h-40 overflow-y-auto">
+// 					{chats.map((chat, index) => (
+// 						<div
+// 							key={index}
+// 							className={`flex p-2 rounded-lg ${chat.isUser === 'yes' ? 'justify-end' : 'justify-start'
+// 								}`}
+// 						>
+// 							<div
+// 								className={`p-2 rounded-lg ${chat.isUser === 'yes' ? 'bg-green-100' : 'bg-blue-100'
+// 									}`}
+// 							>
+// 								<p className={`text-sm text-left ${chat.isUser === 'yes' ? 'text-right' : ''}`}>{chat.message}</p>
+// 							</div>
+// 						</div>
+// 					))}
+// 				</div>
+// 				<button
+// 					className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+// 					onClick={closeModal}
+// 				>
+// 					Close
+// 				</button>
+// 			</div>
+// 		</div>
+// 	);
+// };
 
 const Dashboards = () => {
 	const [showModal, setShowModal] = useState(false);
@@ -43,6 +43,7 @@ const Dashboards = () => {
 	const param = searchParams.get('ref')
 
 	const [tableData, setTableData] = useState('');
+
 	useEffect(() => {
 		console.log("Masuk sini ga nih")
 		const fetchData = async () => {
@@ -142,7 +143,46 @@ const Dashboards = () => {
 									</div>
 								</div>
 							</div>
+
 						</div>
+
+					</div>
+
+					<div className="flex inset-0 items-top justify-center mt-10 gap-4 flex-wrap">
+						{tableData.Sessions.map((session) => (
+							<div className='basis-1/4 py-2 sm:px-6 lg:px-1 sm:mx-6 px-6'>
+								<div key={session.id} className="bg-white rounded-lg shadow-md p-6 w-96 ">
+									<h2 className="text-lg font-semibold mb-4">{new Date(session.createdAt).toLocaleString('en-US', {
+										dateStyle: 'medium',
+										timeStyle: 'short'
+									})}</h2>
+									<div className="max-h-40 overflow-y-auto">
+										<div className="max-h-40 overflow-y-auto">
+											{session.chats ? (
+												session.chats.map((chat) => (
+													<div
+														key={chat.id}
+														className={`flex p-2 rounded-lg ${chat.isUser === 'yes' ? 'justify-end' : 'justify-start'
+															}`}
+													>
+														<div
+															className={`p-2 rounded-lg ${chat.isUser === 'yes' ? 'bg-green-100' : 'bg-blue-100'
+																}`}
+														>
+															<p className={`text-sm text-left ${chat.isUser === 'yes' ? 'text-right' : ''}`}>{chat.message}</p>
+														</div>
+													</div>
+
+												))
+											) : (
+												<p>No chats available.</p>
+											)}
+										</div>
+
+									</div>
+								</div>
+							</div>
+						))}
 					</div>
 
 				</div>
